@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from './user';
+import { User } from 'app/user';
 import { Match } from './match';
 import { MatchService } from './match.service';
-import { OwSocket } from './socket.service';
+import { OwSocket } from 'app/socket.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'match-detail',
@@ -16,10 +16,11 @@ export class MatchDetailComponent implements OnInit {
   mode = 'Observable'
   constructor(private matchService: MatchService, private socketService: OwSocket, private router: Router){}
   ngOnInit(){
-    this.matchService.get_match()
-                      .subscribe(data => this.match = data);
     this.socketService.connect();
-    this.socketService.getSocket().on('gameOver', (data: any) => {this.router.navigate(['/profile'])}); 
+    this.socketService.getSocket().once('gameOver', (data: any) => {this.router.navigate(['/profile'])}); 
+    this.socketService.requestMatch();
+    this.socketService.getMatch()
+                      .subscribe((data: Match) => this.match = data);
   }
 
   clicker(winner: number) {
