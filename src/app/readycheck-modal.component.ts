@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+/*import {Component, Input, OnInit} from '@angular/core';
 
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
@@ -48,3 +48,4 @@ export class NgbdModalComponent {
     return modalRef.result
   }
 }
+*/

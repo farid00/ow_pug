@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Match } from './match';
+import { Match } from './match/match';
 import { Router } from '@angular/router';
 import { AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
@@ -13,14 +13,13 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class OwSocket {
-  private url = 'http://localhost:8080';  
+  private url = 'http://node-express-env.jvbqiv8vxf.us-west-2.elasticbeanstalk.com/';  
   public socket: any;
   public connected: boolean = false;
 
   connect() {
 
     if (!this.connected) {
-      console.log('here');
       var jwt = localStorage.getItem('token');
       this.socket = io(this.url);
       this.socket.on('connect', (function() {
@@ -28,6 +27,7 @@ export class OwSocket {
         this.socket.on('authenticated', function() {
                 console.log('success')
         })
+        this.socket.on()
       }).bind(this));
       this.connected = true;
       console.log(this.connected);
@@ -50,4 +50,24 @@ export class OwSocket {
     });    
     return observable;
   }
+
+  getMatch() {
+    let observable = new Observable(observer => {
+      this.socket.on('gameStart', (data) => {
+        console.log('Game Start Signal');
+        console.log(data);
+        observer.next(data);    
+      });
+      return () => {
+        this.socket.disconnect();
+      };  
+    })     
+    return observable;
+  }
+
+  requestMatch(): void {
+    this.socket.emit('joinQueue','');
+  }  
+
+
 }

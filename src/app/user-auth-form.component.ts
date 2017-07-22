@@ -37,6 +37,10 @@ export class UserAuthFormComponent {
                       data => console.log(data))
   }
 
+  changeNew() {
+    this.creating_new = !this.creating_new;
+  }
+
   onSubmit() {
     if(this.creating_new == true) {
       this.signupUser(this.model.username, this.model.password);

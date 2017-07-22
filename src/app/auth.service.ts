@@ -8,24 +8,24 @@ import { AuthHttp } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-
+var URL = 'http://node-express-env.jvbqiv8vxf.us-west-2.elasticbeanstalk.com'
 @Injectable()
 export class AuthService {
 
   constructor(private http: Http, private router: Router, private authHttp: AuthHttp) {}
 
   signup(username: string, password: string) {
-    return this.http.post('http://localhost:8080/api/register/', {username, password})
+    return this.http.post(URL.concat('/api/register/'), {username, password})
                     .map(res => res.json());
   }
 
   login(username: string, password: string) {
-    return this.http.post('http://localhost:8080/api/login/', {username, password})
+    return this.http.post(URL.concat('/api/login/'), {username, password})
     				.map(res => res.json());
   }
 
   get_profile(): Observable<User> {
-    return this.authHttp.get('http://localhost:8080/api/profile/')
+    return this.authHttp.get(URL.concat('/api/profile/'))
     					.map(this.extractData)
     					.catch(this.handleError); 
   }
